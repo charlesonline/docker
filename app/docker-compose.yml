@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - DB_HOST=bancodedados
+      - DB_DATABASE=meupp
+      - DB_USER=charles
+      - DB_PASSWORD=rootadm*
+    networks:
+      - app-network
+    dns:
+      - 127.0.0.1  # Substitua pelo IP do servidor DNS que resolve 'easyagenda.local'
+      - 8.8.8.8
+      - 8.8.4.4
+    extra_hosts:
+      - "meuapp.local:0.0.0.0"  # Mapear o nome para um IP específico (ajuste conforme necessário)
+    command: >
+      bash -c "composer install && apache2-foreground"
+
+networks:
+  app-network:
+    external: true
+
+volumes:
+  db_data:

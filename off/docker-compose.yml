@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  sistema001:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - DB_HOST=bancodedados
+      - DB_DATABASE=meubanco
+      - DB_USER=user
+      - DB_PASSWORD=password
+    networks:
+      - mynet
+    command: >
+      bash -c "composer install && apache2-foreground"
+
+  bancodedados:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./data:/var/lib/mysql 
+    networks:
+      - mynet
+
+networks:
+  mynet:
+
+volumes:
+  db_data:

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+
+  bancodedados:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: rootadm*
+      MYSQL_DATABASE: meupp
+      MYSQL_USER: charles
+      MYSQL_PASSWORD: rootadm*
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql 
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
+
+volumes:
+  db_data:
